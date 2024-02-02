@@ -6,22 +6,18 @@ import bcrypt from "bcryptjs";
 import { handleRegister } from "./controllers/register.js";
 import { handleSignIn } from "./controllers/signin.js";
 import { handleImage, fetchImage } from "./controllers/image.js";
+import morgan from "morgan";
 
 export const db = knex({
   client: "pg",
-  connection: {
-    connectString:process.env.DATABASE_URL,
-    ssl:{rejectUnauthorized:false},
-    host: process.env.DATABASE_HOST,
-    port: 5432,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PW,
-    database: process.env.DATABASE_DB,
-  },
+  connection: process.env.POSTGRES_URI,
 });
+
+console.log(process.env.POSTGRES_HOST);
 
 const app = express();
 
+app.use(morgan("combined"));
 app.use(cors());
 
 app.use(bodyParser.json());
@@ -51,5 +47,5 @@ app.post("/register", (req, res) => {
 });
 
 app.listen(3001, () => {
-  console.log("working");
+  console.log(`working in port ${3001}`);
 });
