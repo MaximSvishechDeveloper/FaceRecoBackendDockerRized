@@ -4,16 +4,18 @@ import cors from "cors";
 import knex from "knex";
 import bcrypt from "bcryptjs";
 import { handleRegister } from "./controllers/register.js";
-import { handleSignIn } from "./controllers/signin.js";
+import { signInAuthentication } from "./controllers/signin.js";
 import { handleImage, fetchImage } from "./controllers/image.js";
+import {
+  handleGetProfile,
+  handleProfileUpdate,
+} from "./controllers/profile.js";
 import morgan from "morgan";
 
 export const db = knex({
   client: "pg",
   connection: process.env.POSTGRES_URI,
 });
-
-console.log(process.env.POSTGRES_HOST);
 
 const app = express();
 
@@ -32,7 +34,11 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/signin", (req, res) => {
-  handleSignIn(req, res, bcrypt, db);
+  signInAuthentication(req, res, bcrypt, db);
+});
+
+app.post("/profile/:id", (req, res) => {
+  handleProfileUpdate(req, res, db);
 });
 
 app.put("/image", (req, res) => {
@@ -44,6 +50,10 @@ app.post("/imageUrl", (req, res) => {
 
 app.post("/register", (req, res) => {
   handleRegister(req, res, bcrypt, db);
+});
+
+app.get("/profile/:id", (req, res) => {
+  handleGetProfile(req, res, db);
 });
 
 app.listen(3001, () => {
