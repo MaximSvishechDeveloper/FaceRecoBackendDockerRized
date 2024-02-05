@@ -1,16 +1,5 @@
 import jwt from "jsonwebtoken";
-import redis from "redis";
-
-//setup Redis:
-
-const redisClient = redis.createClient({
-  url: process.env.REDIS_URI,
-});
-
-async function redisConnect() {
-  return await redisClient.connect();
-}
-redisConnect();
+import { redisClient } from "../server.js";
 
 const handleSignIn = async (req, res, bcrypt, db) => {
   try {
