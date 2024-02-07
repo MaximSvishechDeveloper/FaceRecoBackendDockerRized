@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import knex from "knex";
 import bcrypt from "bcryptjs";
-import { handleRegister } from "./controllers/register.js";
+import { registerAuthentication } from "./controllers/register.js";
 import { signInAuthentication } from "./controllers/signin.js";
 import { handleImage, fetchImage } from "./controllers/image.js";
 import {
@@ -62,7 +62,7 @@ app.post("/imageUrl", requireAuth, (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  handleRegister(req, res, bcrypt, db);
+  registerAuthentication(req, res, bcrypt, db);
 });
 
 app.get("/profile/:id", requireAuth, (req, res) => {
