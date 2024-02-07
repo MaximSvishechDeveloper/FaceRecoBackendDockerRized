@@ -14,9 +14,12 @@ export const handleProfileUpdate = async (req, res, db) => {
   const { id } = req.params;
 
   const { name, age, pet } = req.body;
+  console.log(name, age, pet);
 
   try {
-    await db("users").where("id", id).update({ name: name });
+    await db("users")
+      .where("id", id)
+      .update({ name: name, age: age, pet: pet });
     res.json("Success");
   } catch (error) {
     res.status(400).json(error.message);
